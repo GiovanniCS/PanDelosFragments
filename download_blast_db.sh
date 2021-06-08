@@ -8,7 +8,7 @@ for f in *.tar.gz
 done
 rm *.tar.gz
 
-cd .. && rm -rf ref_viruses_rep_genomes && mkdir ref_viruses_rep_genomes && cd ref_viruses_rep_genomes
-wget ftp://ftp.ncbi.nlm.nih.gov/blast/db/ref_viruses_rep_genomes.tar.gz
-tar -xvf *.tar.gz
-rm *.tar.gz
+# cd .. && rm -rf ref_viruses_rep_genomes && mkdir ref_viruses_rep_genomes && cd ref_viruses_rep_genomes
+# wget ftp://ftp.ncbi.nlm.nih.gov/blast/db/ref_viruses_rep_genomes.tar.gz
+# tar -xvf *.tar.gz
+# rm *.tar.gz

@@ -9,22 +9,21 @@ chmod +x chromosomer_genome_recontruction.sh
 genome=$1
 if [[ -f $genome ]]
 then
-  type_of_genome=$3
-  if [[ -z "$type_of_genome" || $type_of_genome == p* || $type_of_genome == v* ]]
+  reference_genome=$3
+  if [[ -z "$reference_genome" ||  ! -f $reference_genome ]]
   then
-    if [[ -z "$type_of_genome" || $type_of_genome == p* ]]
+    echo "ERROR: you must specify the full path to a reference genome file or the keyword 'prokaryotic' for searching in the local db"
+  else
+    if [[ $reference_genome == p* ]]
     then
-      type_of_genome="prokaryotic"
-    elif [[ $type_of_genome == v* ]]
-    then
-      type_of_genome="viral"
+      reference_genome="prokaryotic"
     fi
     output_folder=$2
     if [[ ! -d $output_folder ]]
     then
       mkdir -p $output_folder
     fi
-    echo "Using ${type_of_genome} genomes db in the reconstruction phase"
+    echo "Using reference genome from: ${reference_genome}"
 
     rm -rf ${output_folder}/results && mkdir ${output_folder}/results
     rm -rf ${output_folder}/original_genome && mkdir ${output_folder}/original_genome
@@ -35,8 +34,14 @@ then
     cp $genome $genome_file
     genome=$genome_taxon
 
-    #Using BLAST, find the most similar genome in the ref_prok_rep_genomes db to the contigs assembled
-    python3 find_candidate_genome.py $output_folder $type_of_genome $genome_file
+    if [[ $reference_genome == "prokaryotic" ]]
+    then
+      #Using BLAST, find the most similar genome in the ref_prok_rep_genomes db to the contigs assembled
+      python3 find_candidate_genome.py $output_folder $reference_genome $genome_file
+    else
+      cp $reference_genome ${output_folder}/artifacts/candidate_genome.fna
+    fi
+
 
     #Using bwa and samtools align the contigs to the reference genome
     ./align_to_candidate_genome.sh $genome $output_folder $genome_file
@@ -59,8 +64,6 @@ then
     python3 gene_filtering.py $genome $output_folder
 
     python3 extract_gene_sequences.py $genome $output_folder
-  else
-    echo "ERROR: you must specify which kind of genome is in input as third parameter (prokaryotic or viral)"
   fi
 else
   echo "ERROR: genome file non found, provide an absolute path to it"
