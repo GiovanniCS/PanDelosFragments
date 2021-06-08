@@ -45,8 +45,8 @@ then
     python3 genome_recontruction.py $genome $output_folder
 
     #Chromosomer variant of the pipeline
-    ./chromosomer_genome_recontruction.sh $genome $output_folder $genome_file
-    python3 chromosomer_filter_unused_sequences.py $genome_file $output_folder
+    #./chromosomer_genome_recontruction.sh $genome $output_folder $genome_file
+    #python3 chromosomer_filter_unused_sequences.py $genome_file $output_folder
 
     #Using bwa and samtools align the contigs to the reconstructed genome
     ./align_to_reconstructed_genome.sh $genome $output_folder $genome_file
