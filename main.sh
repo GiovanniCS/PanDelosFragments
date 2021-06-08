@@ -29,7 +29,7 @@ then
     rm -rf ${output_folder}/results && mkdir ${output_folder}/results
     rm -rf ${output_folder}/original_genome && mkdir ${output_folder}/original_genome
     rm -rf ${output_folder}/artifacts && mkdir ${output_folder}/artifacts
-    genome_taxon=`head -n1 ${genome} | cut -d" " -f2`
+    genome_taxon=`head -n1 ${genome} | cut -d" " -f2 | cut -d">" -f2`
 
     genome_file="${output_folder}/original_genome/${genome_taxon}_reference_genome.fna"
     cp $genome $genome_file
